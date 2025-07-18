@@ -28,9 +28,10 @@ h1 {
   margin: 0;
 }
 
-.bio {
-  text-align: left;
-  margin-top: 10px;
+.bio p {
+  margin: 5px 0;
+  font-size: 0.95rem;
+  color: #555;
 }
 
 .links a {
