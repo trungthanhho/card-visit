@@ -1,0 +1,85 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(to bottom, #fdf6e3, #ffe066);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  text-align: center;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 90%;
+}
+
+.avatar {
+  width: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+h1 {
+  margin: 0;
+}
+
+.bio {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.links a {
+  display: block;
+  background: #f2f2f2;
+  margin: 10px 0;
+  padding: 12px;
+  text-decoration: none;
+  color: #000;
+  border-radius: 10px;
+  transition: 0.2s;
+}
+
+.links a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  text-decoration: none;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  margin: 8px 0;
+  transition: 0.3s;
+  color: black;
+}
+
+.links a:hover {
+  background-color: #ffe066;
+}
+
+.links a .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.qr-section {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.qr-image {
+  width: 200px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px 0;
+}
+
+.qr-note {
+  font-size: 0.9rem;
+  color: #555;
+}
