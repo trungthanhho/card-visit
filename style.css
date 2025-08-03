@@ -1,42 +1,63 @@
 body {
-  font-family: "Segoe UI", sans-serif;
-  background-color: #f3f58f;
   margin: 0;
-  padding: 40px;
+  padding: 20px;
+  background: #fdf99a;
+  font-family: "Segoe UI", sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.wrapper {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Avatar + Bio ngang */
+.container1 {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}
+
+.bio {
+  flex-grow: 1;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #333;
+}
+
+/* Phần bên dưới chia 2 cột */
+.container2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+}
+
+.cell {
+  background: white;
+  border: 1px solid #eee;
+  padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.card-grid {
-  width: 600px;
-  height: auto; /* auto thay vì cố định */
-  background: #fff;
-  border: 2px solid #e0e0e0;
-  border-radius: 16px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  overflow: hidden;
-}
-
 .image {
-  width: 60%;
-  height: auto;
-  max-height: 100px;
+  max-width: 80%;
+  max-height: 80px;
   object-fit: contain;
-  display: block;
-  margin: auto;
-}
-
-.avatar {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-}
-
-.cell {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  border: 1px solid #e0e0e0;
 }
