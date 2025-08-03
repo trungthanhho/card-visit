@@ -57,7 +57,7 @@ body {
 }
 
 .image {
-  max-width: 80%;
-  max-height: 80px;
+  max-width: 60%;
+  max-height: 150px;
   object-fit: contain;
 }
