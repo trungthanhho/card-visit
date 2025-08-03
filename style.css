@@ -58,14 +58,3 @@ body {
   border-radius: 8px;
   object-fit: cover;
 }
-
-@media screen and (max-width: 480px) {
-  .card-grid {
-    grid-template-columns: 1fr;
-  }
-  .cell,
-  .avatar-box,
-  .bio {
-    grid-column: span 1 !important;
-  }
-}
