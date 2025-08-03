@@ -22,7 +22,6 @@ body {
   align-items: center;
   gap: 20px;
   padding: 20px;
-  border-bottom: 1px solid #eee;
 }
 
 .avatar {
@@ -51,18 +50,17 @@ body {
 .container2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1px;
 }
 
 .cell {
   border-top: 1px solid #eee;
   border-left: 1px solid #eee;
-  padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 150px;
   width: 130px;
+  padding: 20px;
 }
 
 .image {
