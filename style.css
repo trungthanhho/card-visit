@@ -10,7 +10,6 @@ body {
 .wrapper {
   border: 1px solid #000000;
   background: white;
-  border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   max-width: 600px;
@@ -34,6 +33,13 @@ body {
   border: 2px solid #ccc;
 }
 
+/*Hiệu ứng này làm web “có hồn” hơn mà vẫn giữ chuyên nghiệp.*/
+
+.cell img:hover {
+  transform: scale(1.08);
+  transition: 0.2s ease;
+}
+
 .bio {
   flex-grow: 1;
   font-size: 14px;
@@ -49,16 +55,18 @@ body {
 }
 
 .cell {
-  border: 1px solid #ccc;
+  border-top: 1px solid #eee;
+  border-left: 1px solid #eee;
   padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 150px;
+  width: 130px;
 }
 
 .image {
-  max-width: 60%;
+  max-width: 100%;
   max-height: 150px;
   object-fit: contain;
 }
