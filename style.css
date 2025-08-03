@@ -8,6 +8,7 @@ body {
 }
 
 .wrapper {
+  border: 1px solid #000000;
   background: white;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -48,16 +49,22 @@ body {
 }
 
 .cell {
-  background: white;
-  border: 1px solid #eee;
+  border: 1px solid #ccc;
   padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 150px;
 }
 
 .image {
   max-width: 60%;
   max-height: 150px;
+  object-fit: contain;
+}
+
+.icon {
+  width: 150px;
+  height: 90px;
   object-fit: contain;
 }
