@@ -23,6 +23,7 @@ body {
   align-items: center;
   gap: 20px;
   padding: 20px;
+  background-color: #f25f5c;
 }
 
 .avatar {
@@ -48,7 +49,7 @@ body {
   flex-grow: 1;
   font-size: 14px;
   line-height: 1.4;
-  color: #333;
+  color: #ffffff;
 }
 
 /* PHẦN QUAN TRỌNG: vì container2 là table, không dùng grid nữa */
