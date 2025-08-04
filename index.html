@@ -17,22 +17,44 @@
         </div>
       </div>
 
-      <!-- Container 2: grid 2 cột bên dưới -->
-      <div class="container2">
-        <div class="cell">
-          <img src="asset/logo_tanphu.jpeg" class="image" />
-        </div>
-        <div class="cell"><img src="asset/spkt.jpeg" class="image" /></div>
-        <div class="cell"><img src="asset/facebook.png" class="icon" /></div>
-        <div class="cell"><img src="asset/iphone.png" class="image" /></div>
-        <div class="cell"><img src="asset/threads.png" class="icon" /></div>
-        <div class="cell"><img src="asset/gmail.png" class="icon" /></div>
-        <div class="cell"><img src="asset/youtube.png" class="icon" /></div>
-        <div class="cell"><img src="asset/qr.png" class="image" /></div>
-      </div>
+     <!-- Container 2: grid 2 cột dùng table -->
+<table class="container2" style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td class="cell"><a href="https://tanphuvietnam.vn/"><img src="asset/logo_tanphu.jpeg" class="image" /></a></td>
+    <td class="cell"><a href="https://hcmute.edu.vn/"><img src="asset/spkt.jpeg" class="image" /></a></td>
+  </tr>
+  <tr>
+    <td class="cell"><a href="https://www.facebook.com/ladyfirstx"><img src="asset/facebook.png" class="icon" /></a></td>
+    <td class="cell"><a href="tel:0383729787"><img src="asset/iphone.png" class="image" /></a></td>
+  </tr>
+  <tr>
+    <td class="cell"><a href="javascript:void(0);" onclick="toggleQR()">
+  <img src="asset/zalo.png" class="icon" />
+</a></td>
+    <td class="cell"><img src="asset/gmail.png" class="icon" /></td>
+  </tr>
+  <tr>
+    <td class="cell"><img src="asset/youtube.png" class="icon" /></td>
+    <td class="cell"><img src="asset/qr.png" class="image" /></td>
+  </tr>
+</table>
+<!-- QR popup -->
+<div id="qrPopup" class="qr-popup">
+  <div class="qr-content">
+    <span class="close" onclick="toggleQR()">&times;</span>
+    <img src="asset/qrzalo.jpg" alt="Zalo QR" class="qr-img" />
+    <p>Quét mã để kết bạn Zalo</p>
+  </div>
+</div>
       <p style="text-align: center; font-size: 15px; color: #636363; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
 © 2025 Ho Thanh Trung | One Love One Future
 </p>
+<script>
+  function toggleQR() {
+    const popup = document.getElementById("qrPopup");
+    popup.style.display = (popup.style.display === "block") ? "none" : "block";
+  }
+</script>
 
     </div>
 </html>

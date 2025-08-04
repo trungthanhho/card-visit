@@ -8,12 +8,13 @@ body {
 }
 
 .wrapper {
-  border: 1px solid #000000;
+  border: 1px solid #000;
   background: white;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  max-width: 600px;
+  max-width: 500px; /* 👈 Giới hạn chiều rộng */
   width: 100%;
+  border-radius: 16px;
 }
 
 /* Avatar + Bio ngang */
@@ -32,11 +33,15 @@ body {
   border: 2px solid #ccc;
 }
 
-/*Hiệu ứng này làm web “có hồn” hơn mà vẫn giữ chuyên nghiệp.*/
-
-.cell img:hover {
+/* Hiệu ứng khi hover vào ảnh */
+.cell img:hover,
+.container2 img:hover {
   transform: scale(1.08);
   transition: 0.2s ease;
+}
+
+.cell {
+  height: 150px;
 }
 
 .bio {
@@ -46,31 +51,68 @@ body {
   color: #333;
 }
 
-/* Phần bên dưới chia 2 cột */
+/* PHẦN QUAN TRỌNG: vì container2 là table, không dùng grid nữa */
 .container2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.cell {
-  border-top: 1px solid #eee;
-  border-left: 1px solid #eee;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 150px;
-  width: 130px;
+.container2 td {
+  border: 1px solid #ddd;
   padding: 20px;
+  text-align: center;
+  vertical-align: middle;
+  width: 50%; /* mỗi cột chiếm 50% */
 }
 
+/* Kích thước hình ảnh */
 .image {
-  max-width: 100%;
-  max-height: 150px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
 .icon {
-  width: 150px;
-  height: 90px;
+  max-width: 80px;
+  height: auto;
   object-fit: contain;
+}
+
+.qr-popup {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.qr-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 👉 Căn giữa tuyệt đối */
+  background: #fff;
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.qr-img {
+  width: 200px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
 }
