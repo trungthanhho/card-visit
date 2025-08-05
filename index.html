@@ -1,60 +1,96 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Card Visit | Hồ Thành Trung</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="wrapper">
-      <!-- Container 1: avatar + bio nằm ngang -->
-      <div class="container1">
-        <img src="asset/chibi.jpg" class="avatar" />
-        <div class="bio">
-          <p style="font-size: 10pt;font-weight: bold;">HO THANH TRUNG</p>
-          <p style="font-size: 10pt";>Hi, I'm Ho Thanh Trung, currently working at Tan Phu Vietnam JSC as a Digital Transformation Specialist.
-        </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card Visit | Hồ Thành Trung</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="wrapper">
+    <!-- Container 1: avatar + bio nằm ngang -->
+    <div class="container1">
+      <img src="asset/chibi.jpg" class="avatar" />
+      <div class="bio">
+        <p style="font-size: 10pt;font-weight: bold;">HO THANH TRUNG</p>
+        <p id="typewriter"></p>
       </div>
-
-     <!-- Container 2: grid 2 cột dùng table -->
-<table class="container2" style="width: 100%; border-collapse: collapse;">
-  <tr>
-    <td class="cell"><a href="https://tanphuvietnam.vn/"><img src="asset/logo_tanphu.jpeg" class="image" /></a></td>
-    <td class="cell"><a href="https://hcmute.edu.vn/"><img src="asset/spkt.jpeg" class="image" /></a></td>
-  </tr>
-  <tr>
-    <td class="cell"><a href="https://www.facebook.com/ladyfirstx"><img src="asset/facebook.png" class="icon" /></a></td>
-    <td class="cell"><a href="tel:0383729787"><img src="asset/iphone.png" class="image" /></a></td>
-  </tr>
-  <tr>
-    <td class="cell"><a href="javascript:void(0);" onclick="toggleQR()">
-  <img src="asset/zalo.png" class="icon" />
-</a></td>
-    <td class="cell"><a href="mailto:hothanhtrung09@gmail.com"><img src="asset/gmail.png" class="icon" /></a></td>
-  </tr>
-  <tr>
-    <td class="cell"><img src="asset/youtube.png" class="icon" /></td>
-    <td class="cell"><img src="asset/qr.png" class="image" /></td>
-  </tr>
-</table>
-<!-- QR popup -->
-<div id="qrPopup" class="qr-popup">
-  <div class="qr-content">
-    <span class="close" onclick="toggleQR()">&times;</span>
-    <img src="asset/qrzalo.jpg" alt="Zalo QR" class="qr-img" />
-    <p>Quét mã để kết bạn Zalo</p>
-  </div>
-</div>
-      <p style="text-align: center; font-size: 15px; color: #636363; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
-© 2025 Ho Thanh Trung | One Love One Future
-</p>
-<script>
-  function toggleQR() {
-    const popup = document.getElementById("qrPopup");
-    popup.style.display = (popup.style.display === "block") ? "none" : "block";
-  }
-</script>
-
     </div>
+
+    <!-- Container 2: grid 2 cột dùng table -->
+    <table class="container2" style="width: 100%; border-collapse: collapse;">
+      <tr>
+        <td class="cell"><a href="https://tanphuvietnam.vn/"><img src="asset/logo_tanphu.jpeg" class="image" /></a></td>
+        <td class="cell"><a href="https://hcmute.edu.vn/"><img src="asset/spkt.jpeg" class="image" /></a></td>
+      </tr>
+      <tr>
+        <td class="cell"><a href="https://www.facebook.com/ladyfirstx"><img src="asset/facebook.png" class="icon" /></a>
+        </td>
+        <td class="cell"><a href="tel:0383729787"><img src="asset/iphone.png" class="image" /></a></td>
+      </tr>
+      <tr>
+        <td class="cell"><a href="javascript:void(0);" onclick="toggleQR()">
+            <img src="asset/zalo.png" class="icon" />
+          </a></td>
+        <td class="cell"><a href="mailto:hothanhtrung09@gmail.com"><img src="asset/gmail.png" class="icon" /></a></td>
+      </tr>
+      <tr>
+        <td class="cell">
+          <img src="asset/suthanhhoa.png" alt="Ảnh bài hát"
+            style="width: 70%; height: 100%; border-radius: 10px; object-fit: cover; border: 2px solid #ccc; cursor: pointer;"
+            onclick="playMusic()" />
+
+          <audio id="bgMusic" style="display: none;">
+            <source src="asset/su_thanh_hoa.mp3" type="audio/mpeg">
+          </audio>
+        </td>
+        <td class="cell"><img src="asset/qrbank.png" class="image" /></td>
+      </tr>
+    </table>
+    <!-- QR popup -->
+    <div id="qrPopup" class="qr-popup">
+      <div class="qr-content">
+        <span class="close" onclick="toggleQR()">&times;</span>
+        <img src="asset/qrzalo.jpg" alt="Zalo QR" class="qr-img" />
+        <p>Quét mã để kết bạn Zalo</p>
+      </div>
+    </div>
+    <p
+      style="text-align: center; font-size: 15px; color: #636363; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+      © 2025 Ho Thanh Trung - One Love One Future
+    </p>
+    <script>
+
+      const text = "Hi, I'm Ho Thanh Trung, currently working at Tan Phu Vietnam Joint Stock Company as a IT Employee.";
+      const speed = 30; // tốc độ gõ (ms)
+
+      let i = 0;
+      function typeWriter() {
+        if (i < text.length) {
+          document.getElementById("typewriter").innerHTML += text.charAt(i);
+          i++;
+          setTimeout(typeWriter, speed);
+        }
+      }
+
+      window.onload = typeWriter;
+      function toggleQR() {
+        const popup = document.getElementById("qrPopup");
+        popup.style.display = (popup.style.display === "block") ? "none" : "block";
+      }
+
+      function playMusic() {
+        const audio = document.getElementById("bgMusic");
+        if (audio.paused) {
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      }
+    </script>
+
+  </div>
+
 </html>

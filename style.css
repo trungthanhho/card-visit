@@ -24,6 +24,7 @@ body {
   gap: 20px;
   padding: 20px;
   background-color: #f25f5c;
+  height: 100px;
 }
 
 .avatar {
@@ -31,7 +32,7 @@ body {
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #ccc;
+  border: 1px solid #000000;
 }
 
 /* Hiệu ứng khi hover vào ảnh */
@@ -116,4 +117,11 @@ body {
   font-size: 24px;
   color: #333;
   cursor: pointer;
+}
+
+#typewriter {
+  font-size: 14px;
+  color: white;
+  line-height: 1.5;
+  white-space: pre-wrap;
 }
