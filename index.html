@@ -38,13 +38,16 @@
       </tr>
       <tr>
         <td class="cell">
-          <img src="asset/music.jpg" alt="Ảnh bài hát"
-            style="width: 100px; height: auto; border: 1px solid #ccc; cursor: pointer;" onclick="playMusic()" />
+          <div class="music-wrapper" onclick="playMusic()">
+            <img src="asset/music.jpg" alt="Ảnh bài hát" />
+            <button class="play-btn">▶</button>
 
-          <audio id="bgMusic" style="display: none;">
-            <source src="asset/music.mp3" type="audio/mpeg">
-          </audio>
+            <audio id="bgMusic" style="display: none;">
+              <source src="asset/music.mp3" type="audio/mpeg">
+            </audio>
+          </div>
         </td>
+
         <td class="cell"><img src="asset/qrbank.png" class="image" /></td>
       </tr>
     </table>
