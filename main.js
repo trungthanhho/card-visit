@@ -25,3 +25,17 @@ function playMusic() {
     audio.pause();
   }
 }
+
+function updateClock() {
+  const now = new Date();
+  const timeString = now.toLocaleTimeString("vi-VN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  document.getElementById("clock").textContent = `🕒 ${timeString}`;
+}
+
+// Gọi mỗi giây
+setInterval(updateClock, 1000);
+updateClock(); // Gọi ngay khi trang load

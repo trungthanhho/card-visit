@@ -5,6 +5,25 @@ body {
   font-family: "Segoe UI", sans-serif;
   display: flex;
   justify-content: center;
+  background: linear-gradient(-45deg, #fdf99a, #fff3c4, #ffd6a5, #ffc6ff);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+}
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+#clock {
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+  letter-spacing: 1px;
 }
 
 .wrapper {
