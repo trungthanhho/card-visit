@@ -35,6 +35,15 @@ body {
   width: 100%;
   border-radius: 16px;
 }
+.wrapper {
+  border: 2px solid transparent;
+  border-radius: 16px;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.wrapper:hover {
+  border-color: #00e0ff;
+  box-shadow: 0 0 12px #00e0ff, 0 0 24px #00e0ff66;
+}
 
 /* Avatar + Bio ngang */
 .container1 {
@@ -130,6 +139,21 @@ body {
   margin-bottom: 10px;
 }
 
+.qr-content {
+  animation: scaleFade 0.3s ease;
+}
+
+@keyframes scaleFade {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
 .close {
   position: absolute;
   top: 8px;
@@ -192,4 +216,13 @@ body {
 .play-btn:hover {
   background: rgba(255, 255, 255, 0.9);
   scale: 1.1;
+}
+/* Đỡ chóng mặt: chỉ rung nhẹ */
+.avatar {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+.avatar:hover {
+  transform: translateY(-4px) rotate(-2deg) scale(1.03);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
 }
