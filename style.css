@@ -120,16 +120,6 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.cell {
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.cell:hover {
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 8px 16px rgba(230, 117, 117, 0.25);
-  border: 2px solid #ff0909;
-}
-
 .qr-content {
   position: absolute;
   top: 50%;
