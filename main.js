@@ -169,3 +169,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // (Giữ lại hàm toggleQR nếu bạn đã gọi trong HTML onclick)
 window.toggleQR = toggleQR;
+
+const version = new Date().getTime(); // số mili giây hiện tại
+const css = document.createElement("link");
+css.rel = "stylesheet";
+css.href = "style.css?v=" + version;
+document.head.appendChild(css);
+
+const js = document.createElement("script");
+js.src = "main.js?v=" + version;
+document.body.appendChild(js);
