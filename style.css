@@ -52,12 +52,12 @@ body {
   gap: 20px;
   padding: 20px;
   background-color: #f25f5c;
-  height: 200px; /* Chiều cao cố định */
+  height: 260px; /* Chiều cao cố định */
 }
 
 .avatar {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid #000000;
@@ -118,6 +118,16 @@ body {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.cell {
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.cell:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 8px 16px rgba(230, 117, 117, 0.25);
+  border: 2px solid #ff0909;
 }
 
 .qr-content {
@@ -225,4 +235,9 @@ body {
 .avatar:hover {
   transform: translateY(-4px) rotate(-2deg) scale(1.03);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+}
+
+.avatar:hover {
+  box-shadow: 0 0 10px #fff, 0 0 20px #f8e48a, 0 0 30px #d9e788,
+    0 0 40px #ff6ec7;
 }
