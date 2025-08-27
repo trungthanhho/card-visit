@@ -57,6 +57,7 @@ body {
   border-bottom: 1px solid #000;
   border-right: 1px solid #000;
   border-left: 1px solid #000;
+  border-top: 1px solid #000;
 }
 .avatar {
   width: 150px;
@@ -88,7 +89,9 @@ body {
 /* PHẦN QUAN TRỌNG: vì container2 là table, không dùng grid nữa */
 .container2 td {
   padding: 20px;
-  border: 1px solid #000;
+  border-right: 1px solid #000;
+  border-left: 1px solid #000;
+  border-top: 1px solid #000;
   text-align: center;
   vertical-align: middle;
   width: 50%; /* mỗi cột chiếm 50% */
