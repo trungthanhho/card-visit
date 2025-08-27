@@ -1,7 +1,7 @@
 // ====== CONFIG ======
 const TY_STRINGS = [
   "Hi, I'm Ho Thanh Trung.",
-  "Currently working at Tan Phu Vietnam JSC.",
+  "Currently working at Tan Phu Vietnam Joint Stock Company.",
   "I like to travel, play video games and watch movies.",
   "Socialist Republic of Vietnam",
   "Independence - Freedom - Happiness",
