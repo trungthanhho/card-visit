@@ -14,7 +14,7 @@
     <!-- Container 1: avatar + bio nằm ngang -->
     <div class="container1">
       <div class="bio">
-        <img src="asset/anh_dai_dien.png" class="avatar" />
+        <img src="asset/images/anh_dai_dien.png" class="avatar" />
         <p style="font-size: 10pt;font-weight: bold;">HO THANH TRUNG</p>
         <p id="typewriter"></p>
       </div>
@@ -23,24 +23,27 @@
     <!-- Container 2: grid 2 cột dùng table -->
     <table class="container2" style="width: 100%; border-collapse: collapse;">
       <tr>
-        <td class="cell"><a href="https://tanphuvietnam.vn/"><img src="asset/logo_tanphu.jpeg" class="image" /></a></td>
-        <td class="cell"><a href="https://hcmute.edu.vn/"><img src="asset/spkt.jpeg" class="image" /></a></td>
+        <td class="cell"><a href="https://tanphuvietnam.vn/"><img src="asset/images/logo_tanphu.jpeg"
+              class="image" /></a></td>
+        <td class="cell"><a href="https://hcmute.edu.vn/"><img src="asset/icon/spkt.jpeg" class="image" /></a></td>
       </tr>
       <tr>
-        <td class="cell"><a href="https://www.facebook.com/ladyfirstx"><img src="asset/facebook.png" class="icon" /></a>
+        <td class="cell"><a href="https://www.facebook.com/ladyfirstx"><img src="asset/icon/facebook.png"
+              class="icon" /></a>
         </td>
-        <td class="cell"><a href="tel:0383729787"><img src="asset/iphone.png" class="image" /></a></td>
+        <td class="cell"><a href="tel:0383729787"><img src="asset/icon/iphone.png" class="image" /></a></td>
       </tr>
       <tr>
         <td class="cell"><a href="javascript:void(0);" onclick="toggleQR()">
-            <img src="asset/zalo.png" class="icon" />
+            <img src="asset/icon/zalo.png" class="icon" />
           </a></td>
-        <td class="cell"><a href="mailto:hothanhtrung09@gmail.com"><img src="asset/gmail.png" class="icon" /></a></td>
+        <td class="cell"><a href="mailto:hothanhtrung09@gmail.com"><img src="asset/icon/gmail.png" class="icon" /></a>
+        </td>
       </tr>
       <tr>
         <td class="cell">
           <div class="music-wrapper" onclick="playMusic()">
-            <img src="asset/music.jpg" alt="Ảnh bài hát" />
+            <img src="asset/images/music.jpg" alt="Ảnh bài hát" />
             <button class="play-btn">▶</button>
 
             <audio id="bgMusic" style="display: none;">
@@ -49,23 +52,25 @@
           </div>
         </td>
 
-        <td class="cell"><img src="asset/qrbank.png" class="image" /></td>
+        <td class="cell"><img src="asset/images/qrbank.png" class="image" /></td>
       </tr>
     </table>
     <!-- QR popup -->
     <div id="qrPopup" class="qr-popup">
       <div class="qr-content">
         <span class="close" onclick="toggleQR()">&times;</span>
-        <img src="asset/qrzalo.jpg" alt="Zalo QR" class="qr-img" />
+        <img src="asset/images/qrzalo.jpg" alt="Zalo QR" class="qr-img" />
         <p>Quét mã để kết bạn Zalo</p>
       </div>
     </div>
 </body>
-<p
-  style="text-align: center; font-size: 15px; color: #636363; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
-  © 2025 Ho Thanh Trung - One Love One Future
-</p>
-<p id="clock" style="text-align: center; font-size: 14px; margin-top: 10px; color: #555;"></p>
+<div id="footer">
+  <p
+    style="text-align: center; font-size: 15px; color: #636363; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+    © 2025 Ho Thanh Trung - One Love One Future
+  </p>
+  <p id="clock" style="text-align: center; font-size: 14px; margin-top: 10px; color: #555;"></p>
+</div>
 <script src="main.js"></script>
 </div>
 

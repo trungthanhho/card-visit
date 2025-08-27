@@ -2,8 +2,6 @@
 
 🌟 Dự án này tạo một **trang web cá nhân đơn giản** dạng card visit online – giới thiệu nhanh về bạn, liên kết mạng xã hội, hình đại diện, logo công ty, và một số chức năng tương tác cơ bản.
 
----
-
 ## 📸 Demo
 
 ![Ảnh minh hoạ card visit](asset/image_demo.png)
@@ -16,15 +14,11 @@
 - Dễ tuỳ biến nội dung và hình ảnh
 - Tương thích thiết bị di động (responsive)
 
----
-
 ## 🛠️ Công nghệ sử dụng
 
 - `HTML5` / `CSS3`
 - `JavaScript` đơn giản (typewriter effect)
 - `Flexbox` + `Grid` layout
-
----
 
 ## 📁 Cấu trúc thư mục
 

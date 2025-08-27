@@ -27,40 +27,43 @@ body {
 }
 
 .wrapper {
-  border: 1px solid #000;
-  background: white;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   max-width: 500px; /* 👈 Giới hạn chiều rộng */
   width: 100%;
-  border-radius: 16px;
+  border-collapse: collapse;
 }
 .wrapper {
-  border: 2px solid transparent;
-  border-radius: 16px;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease; /*Hiệu ứng mượt mà khi hover*/
 }
 .wrapper:hover {
   border-color: #00e0ff;
-  box-shadow: 0 0 12px #00e0ff, 0 0 24px #00e0ff66;
+  box-shadow: 0 0 12px #00e0ff, 0 0 24px #00e0ff66; /*Hiệu ứng phát sáng khi hover*/
 }
 
 /* Avatar + Bio ngang */
 .container1 {
+  border-top: 1px solid #000;
+  border-right: 1px solid #000;
+  border-left: 1px solid #000;
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 20px;
+  padding: 10px;
   background-color: #f25f5c;
-  height: 260px; /* Chiều cao cố định */
+  height: 280px; /* Chiều cao cố định */
 }
 
+#footer {
+  border-bottom: 1px solid #000;
+  border-right: 1px solid #000;
+  border-left: 1px solid #000;
+}
 .avatar {
   width: 150px;
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #000000;
+  border: 1px solid #fff;
 }
 
 /* Hiệu ứng khi hover vào ảnh */
@@ -68,10 +71,6 @@ body {
 .container2 img:hover {
   transform: scale(1.08);
   transition: 0.2s ease;
-}
-
-.cell {
-  height: 150px;
 }
 
 .bio {
@@ -82,18 +81,22 @@ body {
   text-align: center;
 }
 
-/* PHẦN QUAN TRỌNG: vì container2 là table, không dùng grid nữa */
-.container2 {
-  width: 100%;
-  border-collapse: collapse;
+.cell {
+  height: 150px;
+  background-color: #fff;
 }
-
+/* PHẦN QUAN TRỌNG: vì container2 là table, không dùng grid nữa */
 .container2 td {
-  border: 1px solid #ddd;
   padding: 20px;
+  border: 1px solid #000;
   text-align: center;
   vertical-align: middle;
   width: 50%; /* mỗi cột chiếm 50% */
+}
+
+.container2 tr {
+  border-collapse: separate;
+  border-spacing: 400px;
 }
 
 /* Kích thước hình ảnh */
@@ -198,7 +201,6 @@ body {
   height: auto;
   display: block;
 }
-
 .play-btn {
   position: absolute;
   top: 50%;
