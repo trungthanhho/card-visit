@@ -107,12 +107,12 @@ function setupBankPopup() {
   });
 
   copyButton.addEventListener("click", async () => {
-    const text = "VietinBank\nSTK: 100883054915\nChu tai khoan: HO THANH TRUNG";
+    const text = "VietinBank\nAccount number: 100883054915\nAccount holder: HO THANH TRUNG";
     try {
       await navigator.clipboard.writeText(text);
-      status.textContent = "Đã copy thông tin chuyển khoản.";
+      status.textContent = "Bank transfer details copied.";
     } catch {
-      status.textContent = "Không copy được trên trình duyệt này.";
+      status.textContent = "Copy is not available in this browser.";
     }
   });
 }
@@ -121,7 +121,7 @@ function updateClock() {
   const el = document.getElementById("clock");
   if (!el) return;
 
-  const timeString = new Date().toLocaleTimeString("vi-VN", {
+  const timeString = new Date().toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
@@ -142,7 +142,7 @@ function setupMusic() {
   function syncState() {
     const isPlaying = !audio.paused;
     icon.textContent = isPlaying ? "⏸" : "▶";
-    button.setAttribute("aria-label", isPlaying ? "Tạm dừng nhạc" : "Phát nhạc");
+    button.setAttribute("aria-label", isPlaying ? "Pause music" : "Play music");
   }
 
   function syncProgress() {

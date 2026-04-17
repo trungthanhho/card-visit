@@ -20,7 +20,7 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--ink);
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Segoe UI", sans-serif;
   background:
   r
     linear-gradient(120deg, rgba(36, 123, 160, 0.22), transparent 32%),
@@ -211,10 +211,27 @@ h1 {
   outline-offset: 3px;
 }
 
-.contact-item img {
-  width: 46px;
-  height: 46px;
-  object-fit: contain;
+.apple-icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  place-items: center;
+  border: 1px solid rgba(36, 123, 160, 0.16);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #f9fbfc, #edf4f7);
+  color: var(--teal);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.apple-icon svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.85;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .contact-item strong,

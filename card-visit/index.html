@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Card visit online của Ho Thanh Trung" />
+  <meta name="description" content="Online personal card for Ho Thanh Trung" />
   <title>Card Visit | Ho Thanh Trung</title>
   <link rel="icon" href="asset/icon/id-card.png" type="image/png" />
   <link rel="stylesheet" href="style.css" />
@@ -12,7 +12,7 @@
 
 <body>
   <main class="page-shell">
-    <section class="profile-card" aria-label="Card visit của Ho Thanh Trung">
+    <section class="profile-card" aria-label="Personal card for Ho Thanh Trung">
       <header class="hero-panel">
         <div class="identity">
           <img src="asset/images/anh_dai_dien.png" alt="Ho Thanh Trung" class="avatar" />
@@ -36,9 +36,14 @@
         </div>
       </header>
 
-      <section class="contact-panel" aria-label="Thông tin liên hệ">
+      <section class="contact-panel" aria-label="Contact information">
         <a class="contact-item" href="tel:0383729787">
-          <img src="asset/icon/iphone.png" alt="" />
+          <span class="apple-icon" aria-hidden="true">
+            <svg viewBox="0 0 28 28" focusable="false">
+              <path d="M11.1 3.5h5.8c1.3 0 2.3 1 2.3 2.3v16.4c0 1.3-1 2.3-2.3 2.3h-5.8c-1.3 0-2.3-1-2.3-2.3V5.8c0-1.3 1-2.3 2.3-2.3Z" />
+              <path d="M12.4 21.4h3.2" />
+            </svg>
+          </span>
           <span>
             <strong>Phone</strong>
             <small>0383 729 787</small>
@@ -46,7 +51,12 @@
         </a>
 
         <a class="contact-item" href="mailto:hothanhtrung09@gmail.com">
-          <img src="asset/icon/gmail.png" alt="" />
+          <span class="apple-icon" aria-hidden="true">
+            <svg viewBox="0 0 28 28" focusable="false">
+              <path d="M5.2 7.5h17.6c1 0 1.8.8 1.8 1.8v9.4c0 1-.8 1.8-1.8 1.8H5.2c-1 0-1.8-.8-1.8-1.8V9.3c0-1 .8-1.8 1.8-1.8Z" />
+              <path d="m4.6 8.8 8 6.5c.8.6 2 .6 2.8 0l8-6.5" />
+            </svg>
+          </span>
           <span>
             <strong>Email</strong>
             <small>hothanhtrung09@gmail.com</small>
@@ -54,15 +64,26 @@
         </a>
 
         <button class="contact-item contact-button" type="button" id="zaloButton">
-          <img src="asset/icon/zalo.png" alt="" />
+          <span class="apple-icon" aria-hidden="true">
+            <svg viewBox="0 0 28 28" focusable="false">
+              <path d="M5.1 12.4c0-4.1 3.7-7.2 8.9-7.2s8.9 3.1 8.9 7.2-3.7 7.2-8.9 7.2c-.8 0-1.6-.1-2.3-.2L7.2 22c-.5.3-1.1-.2-.8-.8l1.1-3.1c-1.5-1.3-2.4-3.3-2.4-5.7Z" />
+              <path d="M10.2 12.6h.1m3.6 0h.1m3.6 0h.1" />
+            </svg>
+          </span>
           <span>
             <strong>Zalo</strong>
-            <small>Quét mã để kết bạn</small>
+            <small>Scan the QR code to connect</small>
           </span>
         </button>
 
         <a class="contact-item" href="https://www.facebook.com/ladyfirstx">
-          <img src="asset/icon/facebook.png" alt="" />
+          <span class="apple-icon" aria-hidden="true">
+            <svg viewBox="0 0 28 28" focusable="false">
+              <path d="M14 24.2c5.6 0 10.2-4.6 10.2-10.2S19.6 3.8 14 3.8 3.8 8.4 3.8 14 8.4 24.2 14 24.2Z" />
+              <path d="M14 24.2c1.9-2.1 3-5.8 3-10.2s-1.1-8.1-3-10.2c-1.9 2.1-3 5.8-3 10.2s1.1 8.1 3 10.2Z" />
+              <path d="M4.8 10.4h18.4M4.8 17.6h18.4" />
+            </svg>
+          </span>
           <span>
             <strong>Facebook</strong>
             <small>/ladyfirstx</small>
@@ -70,27 +91,27 @@
         </a>
       </section>
 
-      <section class="showcase-panel" aria-label="Mã QR và sở thích">
+      <section class="showcase-panel" aria-label="QR code and favorites">
         <button class="qr-box bank-qr-button" type="button" id="bankQrButton">
           <span class="section-label">Bank QR</span>
-          <img src="asset/images/qrbank.png" alt="Mã QR ngân hàng" />
-          <small>Chạm để chuyển khoản</small>
+          <img src="asset/images/qrbank.png" alt="Bank QR code" />
+          <small>Tap to transfer</small>
         </button>
 
         <div class="music-box">
-          <img src="asset/images/music.jpg" alt="Âm nhạc yêu thích" />
+          <img src="asset/images/music.jpg" alt="Favorite music" />
           <div>
-            <div class="music-player" aria-label="Trình phát nhạc">
+            <div class="music-player" aria-label="Music player">
               <div class="music-player-copy">
                 <span>Now Playing</span>
-                <strong>Di Giữa Trời Rực Rỡ</strong>
+                <strong>Di Giua Troi Ruc Ro</strong>
               </div>
-              <div class="music-controls" aria-label="Điều khiển nhạc">
-                <button class="music-control" type="button" id="musicBack" aria-label="Tua lại">◀◀</button>
-                <button class="music-toggle" type="button" id="musicToggle" aria-label="Phát nhạc">
+              <div class="music-controls" aria-label="Music controls">
+                <button class="music-control" type="button" id="musicBack" aria-label="Restart">◀◀</button>
+                <button class="music-toggle" type="button" id="musicToggle" aria-label="Play music">
                   <span id="musicIcon">▶</span>
                 </button>
-                <button class="music-control" type="button" id="musicNext" aria-label="Tua tới">▶▶</button>
+                <button class="music-control" type="button" id="musicNext" aria-label="Skip ahead">▶▶</button>
               </div>
               <div class="music-progress" aria-hidden="true">
                 <span id="musicProgress"></span>
@@ -112,20 +133,20 @@
 
   <div id="qrPopup" class="qr-popup" aria-hidden="true">
     <div class="qr-content" role="dialog" aria-modal="true" aria-label="Zalo QR">
-      <button class="close" type="button" id="closeQr" aria-label="Đóng QR">&times;</button>
+      <button class="close" type="button" id="closeQr" aria-label="Close QR">&times;</button>
       <img src="asset/images/qrzalo.jpg" alt="Zalo QR" class="qr-img" />
-      <p>Quét mã để kết bạn Zalo</p>
+      <p>Scan the QR code to connect on Zalo</p>
     </div>
   </div>
 
   <div id="bankPopup" class="qr-popup" aria-hidden="true">
     <div class="qr-content bank-content" role="dialog" aria-modal="true" aria-label="Bank QR">
-      <button class="close" type="button" id="closeBankQr" aria-label="Đóng Bank QR">&times;</button>
-      <img src="asset/images/qrbank.png" alt="Mã QR chuyển khoản VietinBank" class="qr-img bank-qr-img" />
+      <button class="close" type="button" id="closeBankQr" aria-label="Close Bank QR">&times;</button>
+      <img src="asset/images/qrbank.png" alt="VietinBank transfer QR code" class="qr-img bank-qr-img" />
       <p>HO THANH TRUNG · VietinBank · 100883054915</p>
       <div class="bank-actions">
-        <a class="bank-action primary" href="https://dl.vietqr.io/pay?app=icb&ba=100883054915@icb&bn=HO%20THANH%20TRUNG">Mở VietinBank iPay</a>
-        <button class="bank-action" type="button" id="copyBankHint">Copy STK</button>
+        <a class="bank-action primary" href="https://dl.vietqr.io/pay?app=icb&ba=100883054915@icb&bn=HO%20THANH%20TRUNG">Open VietinBank iPay</a>
+        <button class="bank-action" type="button" id="copyBankHint">Copy account number</button>
       </div>
       <small id="bankCopyStatus" class="copy-status" aria-live="polite"></small>
     </div>
