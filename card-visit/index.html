@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Card visit online của Ho Thanh Trung" />
+  <title>Card Visit | Ho Thanh Trung</title>
+  <link rel="icon" href="asset/icon/id-card.png" type="image/png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <main class="page-shell">
+    <section class="profile-card" aria-label="Card visit của Ho Thanh Trung">
+      <header class="hero-panel">
+        <div class="identity">
+          <img src="asset/images/anh_dai_dien.png" alt="Ho Thanh Trung" class="avatar" />
+          <div>
+            <p class="eyebrow">Personal Card</p>
+            <h1>Ho Thanh Trung</h1>
+            <p id="typewriter" class="typewriter"></p>
+          </div>
+        </div>
+
+        <div class="hero-meta">
+          <a href="https://tanphuvietnam.vn/" class="logo-link" aria-label="Tan Phu Vietnam">
+            <img src="asset/images/logo_tanphu.jpeg" alt="Tan Phu Vietnam" />
+          </a>
+          <a href="https://hcmute.edu.vn/" class="logo-link" aria-label="HCMUTE">
+            <img src="asset/icon/spkt.jpeg" alt="HCMUTE" />
+          </a>
+          <a href="https://inochi.vn/" class="logo-link" aria-label="Inochi">
+            <img src="asset/images/inochi.png" alt="Inochi" />
+          </a>
+        </div>
+      </header>
+
+      <section class="contact-panel" aria-label="Thông tin liên hệ">
+        <a class="contact-item" href="tel:0383729787">
+          <img src="asset/icon/iphone.png" alt="" />
+          <span>
+            <strong>Phone</strong>
+            <small>0383 729 787</small>
+          </span>
+        </a>
+
+        <a class="contact-item" href="mailto:hothanhtrung09@gmail.com">
+          <img src="asset/icon/gmail.png" alt="" />
+          <span>
+            <strong>Email</strong>
+            <small>hothanhtrung09@gmail.com</small>
+          </span>
+        </a>
+
+        <button class="contact-item contact-button" type="button" id="zaloButton">
+          <img src="asset/icon/zalo.png" alt="" />
+          <span>
+            <strong>Zalo</strong>
+            <small>Quét mã để kết bạn</small>
+          </span>
+        </button>
+
+        <a class="contact-item" href="https://www.facebook.com/ladyfirstx">
+          <img src="asset/icon/facebook.png" alt="" />
+          <span>
+            <strong>Facebook</strong>
+            <small>/ladyfirstx</small>
+          </span>
+        </a>
+      </section>
+
+      <section class="showcase-panel" aria-label="Mã QR và sở thích">
+        <button class="qr-box bank-qr-button" type="button" id="bankQrButton">
+          <span class="section-label">Bank QR</span>
+          <img src="asset/images/qrbank.png" alt="Mã QR ngân hàng" />
+          <small>Chạm để chuyển khoản</small>
+        </button>
+
+        <div class="music-box">
+          <img src="asset/images/music.jpg" alt="Âm nhạc yêu thích" />
+          <div>
+            <div class="music-player" aria-label="Trình phát nhạc">
+              <div class="music-player-copy">
+                <span>Now Playing</span>
+                <strong>Di Giữa Trời Rực Rỡ</strong>
+              </div>
+              <div class="music-controls" aria-label="Điều khiển nhạc">
+                <button class="music-control" type="button" id="musicBack" aria-label="Tua lại">◀◀</button>
+                <button class="music-toggle" type="button" id="musicToggle" aria-label="Phát nhạc">
+                  <span id="musicIcon">▶</span>
+                </button>
+                <button class="music-control" type="button" id="musicNext" aria-label="Tua tới">▶▶</button>
+              </div>
+              <div class="music-progress" aria-hidden="true">
+                <span id="musicProgress"></span>
+              </div>
+            </div>
+            <audio id="bgMusic" preload="metadata">
+              <source src="asset/music/di_giua_troi_ruc_ro.mp3" type="audio/mpeg" />
+            </audio>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>© 2025 Ho Thanh Trung</p>
+        <p id="clock" aria-live="polite"></p>
+      </footer>
+    </section>
+  </main>
+
+  <div id="qrPopup" class="qr-popup" aria-hidden="true">
+    <div class="qr-content" role="dialog" aria-modal="true" aria-label="Zalo QR">
+      <button class="close" type="button" id="closeQr" aria-label="Đóng QR">&times;</button>
+      <img src="asset/images/qrzalo.jpg" alt="Zalo QR" class="qr-img" />
+      <p>Quét mã để kết bạn Zalo</p>
+    </div>
+  </div>
+
+  <div id="bankPopup" class="qr-popup" aria-hidden="true">
+    <div class="qr-content bank-content" role="dialog" aria-modal="true" aria-label="Bank QR">
+      <button class="close" type="button" id="closeBankQr" aria-label="Đóng Bank QR">&times;</button>
+      <img src="asset/images/qrbank.png" alt="Mã QR chuyển khoản VietinBank" class="qr-img bank-qr-img" />
+      <p>HO THANH TRUNG · VietinBank · 100883054915</p>
+      <div class="bank-actions">
+        <a class="bank-action primary" href="https://dl.vietqr.io/pay?app=icb&ba=100883054915@icb&bn=HO%20THANH%20TRUNG">Mở VietinBank iPay</a>
+        <button class="bank-action" type="button" id="copyBankHint">Copy STK</button>
+      </div>
+      <small id="bankCopyStatus" class="copy-status" aria-live="polite"></small>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+
+</html>
