@@ -871,7 +871,7 @@
       setMessage("Đã lưu cục bộ, đang gửi Google Sheet...", "success");
       await syncRecord(record.id);
     } else {
-      setMessage("Đã lưu cục bộ. Có thể xuất CSV hoặc cấu hình Google Sheet.", "success");
+      setMessage("Thiết bị này chưa cấu hình Google Apps Script URL nên phiếu chỉ lưu cục bộ, chưa gửi Google Sheet.", "error");
     }
 
     resetForm();
