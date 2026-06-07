@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phiếu xuất kho vật tư</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-brand">
+      <img class="company-logo" src="company-logo.png" alt="Logo công ty DNP">
+      <div class="header-title">
+        <p class="eyebrow">Kho vật tư</p>
+        <h1>Phiếu xuất kho vật tư</h1>
+        <p id="clockText" class="clock-text">Đang tải thời gian...</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div id="lockStatus" class="status-pill" aria-live="polite">Đang kiểm tra</div>
+      <button id="adminLoginBtn" class="secondary-button" type="button">
+        <i data-lucide="user-shield" aria-hidden="true"></i>
+        <span>Admin</span>
+      </button>
+      <button id="adminLogoutBtn" class="ghost-button hidden" type="button">
+        <i data-lucide="log-out" aria-hidden="true"></i>
+        <span>Thoát admin</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="appShell" class="app-shell no-admin">
+    <section class="entry-panel" aria-labelledby="entryTitle">
+      <div class="panel-heading">
+        <div>
+          <h2 id="entryTitle">Thông tin lấy vật tư</h2>
+          <p id="editState" class="muted-text"></p>
+        </div>
+        <button id="cancelEditBtn" class="ghost-button hidden" type="button">
+          <i data-lucide="x" aria-hidden="true"></i>
+          <span>Hủy sửa</span>
+        </button>
+      </div>
+
+      <div id="formLockNotice" class="notice hidden" role="status"></div>
+
+      <form id="issueForm" novalidate>
+        <fieldset id="issueFieldset">
+          <div class="form-grid">
+            <label class="field">
+              <span>Ngày vào lấy</span>
+              <input id="takeDate" name="takeDate" type="text" readonly required>
+            </label>
+            <label class="field">
+              <span>Giờ vào lấy</span>
+              <input id="takeTime" name="takeTime" type="text" readonly required>
+            </label>
+            <label class="field wide">
+              <span>Họ tên</span>
+              <input id="fullName" name="fullName" type="text" autocomplete="name" required>
+            </label>
+            <label class="field">
+              <span>Xưởng</span>
+              <select id="workshop" name="workshop" required>
+                <option value="">Chọn xưởng</option>
+                <option>Xưởng thường</option>
+                <option>Xưởng sạch</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Bộ phận làm việc</span>
+              <select id="department" name="department" required>
+                <option value="">Chọn bộ phận</option>
+                <option>Bảo trì</option>
+                <option>Thổi</option>
+                <option>Cắt</option>
+                <option>Đóng gói</option>
+                <option>Tạo hạt</option>
+                <option>Trộn</option>
+                <option>Kỹ thuật</option>
+                <option>QC</option>
+                <option>5S</option>
+                <option>Gián Tiếp</option>
+                <option>Công Nghệ</option>
+                <option>Màng co</option>
+              </select>
+            </label>
+          </div>
+
+          <section class="section-block" aria-labelledby="itemsTitle">
+            <div class="section-title">
+              <h3 id="itemsTitle">Danh sách vật tư</h3>
+              <button id="addItemBtn" class="secondary-button" type="button">
+                <i data-lucide="plus" aria-hidden="true"></i>
+                <span>Thêm dòng vật tư</span>
+              </button>
+            </div>
+            <div id="itemRows" class="item-rows"></div>
+          </section>
+
+          <section class="section-block" aria-labelledby="proofTitle">
+            <div class="section-title">
+              <h3 id="proofTitle">Xác nhận</h3>
+              <span id="photoCount" class="small-badge">0/3 ảnh</span>
+            </div>
+
+            <div class="proof-grid">
+              <div class="upload-panel">
+                <label class="field file-field">
+                  <span>Ảnh chụp vật tư</span>
+                  <input id="photoInput" type="file" accept="image/*" capture="environment" multiple>
+                </label>
+                <div id="photoPreview" class="photo-preview" aria-live="polite"></div>
+              </div>
+
+              <div class="signature-panel">
+                <div class="signature-header">
+                  <label for="signaturePad">Ký tên xác nhận</label>
+                  <button id="clearSignatureBtn" class="icon-button" type="button" aria-label="Xóa chữ ký" title="Xóa chữ ký">
+                    <i data-lucide="eraser" aria-hidden="true">X</i>
+                  </button>
+                </div>
+                <canvas id="signaturePad" class="signature-pad"></canvas>
+              </div>
+            </div>
+
+            <label class="field">
+              <span>Ghi chú</span>
+              <textarea id="note" name="note" rows="3" placeholder="Không bắt buộc"></textarea>
+            </label>
+          </section>
+        </fieldset>
+
+        <div class="submit-row">
+          <button id="submitBtn" class="primary-button" type="submit">
+            <i data-lucide="send" aria-hidden="true"></i>
+            <span>Gửi phiếu</span>
+          </button>
+          <p id="formMessage" class="form-message" aria-live="polite"></p>
+        </div>
+      </form>
+    </section>
+
+    <aside id="adminPanel" class="side-panel hidden" aria-label="Quản trị dữ liệu">
+      <section class="admin-section">
+        <div class="section-title compact">
+          <h3>CSDL CCDC</h3>
+          <span id="dbStatus" class="small-badge">0 mã</span>
+        </div>
+        <label class="field file-field">
+          <span>File mã CCDC</span>
+          <input id="dbFile" type="file" accept=".csv,.xlsx,.xls">
+        </label>
+      </section>
+
+      <section class="admin-section">
+        <div class="section-title compact">
+          <h3>Đồng bộ</h3>
+          <span id="syncStatus" class="small-badge">Cục bộ</span>
+        </div>
+        <label class="field">
+          <span>Google Apps Script URL</span>
+          <input id="sheetUrl" type="url" inputmode="url" placeholder="https://script.google.com/...">
+        </label>
+        <div class="button-grid">
+          <button id="saveSheetUrlBtn" class="secondary-button" type="button">
+            <i data-lucide="save" aria-hidden="true"></i>
+            <span>Lưu URL</span>
+          </button>
+          <button id="resendPendingBtn" class="secondary-button" type="button">
+            <i data-lucide="refresh-cw" aria-hidden="true"></i>
+            <span>Gửi lại</span>
+          </button>
+          <button id="exportCsvBtn" class="secondary-button" type="button">
+            <i data-lucide="file-spreadsheet" aria-hidden="true"></i>
+            <span>Xuất CSV</span>
+          </button>
+          <button id="exportJsonBtn" class="secondary-button" type="button">
+            <i data-lucide="archive" aria-hidden="true"></i>
+            <span>Xuất JSON</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="admin-section">
+        <div class="section-title compact">
+          <h3>Khóa nhập</h3>
+          <span id="adminStatus" class="small-badge">Chưa mở</span>
+        </div>
+        <div class="admin-grid">
+          <label class="field">
+            <span>Mã quản lý</span>
+            <input id="managerPin" type="password" inputmode="numeric" autocomplete="current-password">
+          </label>
+          <label class="field">
+            <span>Số phút mở</span>
+            <input id="unlockMinutes" type="number" min="5" max="480" step="5" value="60">
+          </label>
+        </div>
+        <div class="button-grid">
+          <button id="unlockBtn" class="secondary-button" type="button">
+            <i data-lucide="unlock" aria-hidden="true"></i>
+            <span>Mở khóa</span>
+          </button>
+          <button id="lockNowBtn" class="danger-button red-danger-button" type="button">
+            <i data-lucide="lock" aria-hidden="true"></i>
+            <span>Khóa ngay</span>
+          </button>
+        </div>
+        <div class="pin-grid">
+          <label class="field">
+            <span>Mã hiện tại</span>
+            <input id="currentPin" type="password" inputmode="numeric" autocomplete="current-password">
+          </label>
+          <label class="field">
+            <span>Mã mới</span>
+            <input id="newPin" type="password" inputmode="numeric" autocomplete="new-password">
+          </label>
+          <button id="changePinBtn" class="secondary-button" type="button">
+            <i data-lucide="key-round" aria-hidden="true"></i>
+            <span>Đổi mã</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="admin-section">
+        <div class="section-title compact">
+          <h3>Phiếu gần đây</h3>
+          <span id="recordCount" class="small-badge">0 phiếu</span>
+        </div>
+        <div id="recordsList" class="records-list"></div>
+      </section>
+    </aside>
+  </main>
+
+  <div id="adminDialog" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="adminDialogTitle">
+    <div class="modal-card">
+      <div class="modal-heading">
+        <h2 id="adminDialogTitle">Đăng nhập admin</h2>
+        <button id="closeAdminDialogBtn" class="icon-button" type="button" aria-label="Đóng" title="Đóng">
+          <i data-lucide="x" aria-hidden="true">X</i>
+        </button>
+      </div>
+      <label class="field">
+        <span>Mã quản lý</span>
+        <input id="adminLoginPin" type="password" inputmode="numeric" autocomplete="current-password">
+      </label>
+      <div class="modal-actions">
+        <button id="adminSubmitBtn" class="primary-button" type="button">
+          <i data-lucide="log-in" aria-hidden="true"></i>
+          <span>Đăng nhập</span>
+        </button>
+      </div>
+      <p id="adminLoginMessage" class="form-message" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <div id="cancelDialog" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="cancelDialogTitle">
+    <div class="modal-card cancel-modal-card">
+      <div class="modal-heading">
+        <div>
+          <p class="eyebrow">Quản trị phiếu</p>
+          <h2 id="cancelDialogTitle">Hủy phiếu xuất kho</h2>
+        </div>
+        <button id="closeCancelDialogBtn" class="icon-button" type="button" aria-label="Đóng" title="Đóng">
+          <i data-lucide="x" aria-hidden="true">X</i>
+        </button>
+      </div>
+      <div class="cancel-summary">
+        <div>
+          <span>Mã phiếu</span>
+          <strong id="cancelRecordId">-</strong>
+        </div>
+        <div>
+          <span>Người nhận</span>
+          <strong id="cancelRecordName">-</strong>
+        </div>
+      </div>
+      <label class="field">
+        <span>Lý do hủy</span>
+        <textarea id="cancelReasonInput" rows="4" placeholder="Nhập lý do hủy để lưu vết trên Google Sheet"></textarea>
+      </label>
+      <p id="cancelDialogMessage" class="form-message" aria-live="polite"></p>
+      <div class="modal-actions">
+        <button id="cancelBackBtn" class="secondary-button" type="button">
+          <i data-lucide="arrow-left" aria-hidden="true"></i>
+          <span>Quay lại</span>
+        </button>
+        <button id="confirmCancelBtn" class="danger-button" type="button">
+          <i data-lucide="ban" aria-hidden="true"></i>
+          <span>Xác nhận hủy</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="deleteDialog" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="deleteDialogTitle">
+    <div class="modal-card delete-modal-card">
+      <div class="modal-heading">
+        <div>
+          <p class="eyebrow">Xóa dữ liệu</p>
+          <h2 id="deleteDialogTitle">Xóa vĩnh viễn phiếu</h2>
+        </div>
+        <button id="closeDeleteDialogBtn" class="icon-button" type="button" aria-label="Đóng" title="Đóng">
+          <i data-lucide="x" aria-hidden="true">X</i>
+        </button>
+      </div>
+      <div class="delete-warning">
+        <i data-lucide="triangle-alert" aria-hidden="true"></i>
+        <div>
+          <strong>Thao tác này sẽ xóa phiếu khỏi danh sách và Google Sheet.</strong>
+          <span>Ảnh và chữ ký của phiếu trên Google Drive cũng sẽ được đưa vào thùng rác nếu Apps Script đã được cập nhật.</span>
+        </div>
+      </div>
+      <div class="cancel-summary">
+        <div>
+          <span>Mã phiếu</span>
+          <strong id="deleteRecordId">-</strong>
+        </div>
+        <div>
+          <span>Người nhận</span>
+          <strong id="deleteRecordName">-</strong>
+        </div>
+      </div>
+      <label class="field">
+        <span>Nhập XOA để xác nhận</span>
+        <input id="deleteConfirmInput" type="text" autocomplete="off">
+      </label>
+      <p id="deleteDialogMessage" class="form-message" aria-live="polite"></p>
+      <div class="modal-actions">
+        <button id="deleteBackBtn" class="secondary-button" type="button">
+          <i data-lucide="arrow-left" aria-hidden="true"></i>
+          <span>Quay lại</span>
+        </button>
+        <button id="confirmDeleteBtn" class="danger-button permanent-danger-button" type="button">
+          <i data-lucide="trash-2" aria-hidden="true"></i>
+          <span>Xóa vĩnh viễn</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
