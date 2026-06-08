@@ -8,6 +8,16 @@ Mở file `index.html` bằng trình duyệt.
 
 Khi triển khai cho công nhân quét QR/NFC, nên đưa thư mục này lên một URL nội bộ, GitHub Pages, Netlify, hoặc web server công ty. QR code và thẻ NFC chỉ cần trỏ đến URL đó.
 
+## Cấu hình dùng chung
+
+App có file `config.js` để lưu cấu hình dùng chung cho mọi thiết bị:
+
+- `materialsUrl`: đang trỏ tới `materials.json`, là CSDL CCDC xuất từ file Excel `MÃ CCDC.xlsx`.
+- `sheetUrl`: dán URL Web app Apps Script dạng `https://script.google.com/macros/s/.../exec` vào đây một lần, sau đó đẩy lại lên GitHub Pages/web server. Công nhân mở web trên điện thoại sẽ tự dùng URL này, không cần dán thủ công.
+- `materialsVersion`: đổi giá trị này mỗi lần cập nhật `materials.json` để điện thoại tải bản CSDL mới.
+
+Nếu kế toán gửi file Excel CCDC mới, thay file Excel trong thư mục dự án rồi tạo lại `materials.json` trước khi deploy.
+
 ## Nạp cơ sở dữ liệu mã CCDC
 
 Trong khung `CSDL CCDC`, chọn file Excel hoặc CSV kế toán gửi.
@@ -18,7 +28,7 @@ File cần có các cột tương đương:
 - `Tên vật tư` hoặc `Tên CCDC`
 - `Đơn vị tính` hoặc `ĐVT`
 
-Sau khi nạp, dữ liệu được lưu trong trình duyệt. Công nhân gõ mã như `CLKH0089` hoặc gõ chuỗi tên như `bạc đạn`, app sẽ lọc theo mã và tên. Nếu không có kết quả, app hiện lựa chọn `Chưa có mã vật tư`.
+Khi deploy chính thức, công nhân không cần nạp file trên điện thoại vì app tự tải `materials.json`. Nút nạp file trong khung admin chỉ dùng để thử nhanh trên một thiết bị. Công nhân gõ mã như `CLKH0089` hoặc gõ chuỗi tên như `bạc đạn`, app sẽ lọc theo mã và tên. Nếu không có kết quả, app hiện lựa chọn `Chưa có mã vật tư`.
 
 ## Lưu dữ liệu
 
@@ -36,7 +46,7 @@ Với vận hành thật, nên dùng Google Sheet + Google Drive:
 4. Thay `SPREADSHEET_ID` bằng ID của Google Sheet.
 5. Thay `DRIVE_FOLDER_ID` bằng ID thư mục Drive.
 6. Deploy Apps Script dạng `Web app`.
-7. Copy URL deploy vào ô `Google Apps Script URL` trong app rồi bấm `Lưu URL`.
+7. Copy URL deploy vào `sheetUrl` trong file `config.js`, sau đó deploy/push lại web. Ô `Google Apps Script URL` trong app chỉ lưu tạm trên thiết bị đang dùng.
 
 URL đúng phải có dạng:
 

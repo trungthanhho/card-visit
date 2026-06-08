@@ -1,6 +1,8 @@
 (() => {
   "use strict";
 
+  const SYSTEM_CONFIG = window.WAREHOUSE_CONFIG || {};
+
   const STORAGE_KEYS = {
     materials: "mw_material_database_v1",
     records: "mw_issue_records_v1",
@@ -60,9 +62,10 @@
 
   document.addEventListener("DOMContentLoaded", init);
 
-  function init() {
+  async function init() {
     cacheElements();
     loadState();
+    await loadSystemMaterials();
     setupEvents();
     setupSignaturePad();
     addItemRow();
@@ -157,12 +160,56 @@
   function loadState() {
     state.materials = loadJson(STORAGE_KEYS.materials, DEFAULT_MATERIALS);
     state.records = loadJson(STORAGE_KEYS.records, []);
+    const localSettings = loadJson(STORAGE_KEYS.settings, {});
     state.settings = {
       ...DEFAULT_SETTINGS,
-      ...loadJson(STORAGE_KEYS.settings, {})
+      ...localSettings
     };
+    if (SYSTEM_CONFIG.sheetUrl) {
+      state.settings.sheetUrl = String(SYSTEM_CONFIG.sheetUrl).trim();
+    }
     state.adminAuthenticated = sessionStorage.getItem(STORAGE_KEYS.adminSession) === "true";
     els.sheetUrl.value = state.settings.sheetUrl || "";
+  }
+
+  async function loadSystemMaterials() {
+    const materialsUrl = String(SYSTEM_CONFIG.materialsUrl || "materials.json").trim();
+    if (!materialsUrl || typeof fetch !== "function") return;
+
+    try {
+      const response = await fetch(withVersionParam(materialsUrl, SYSTEM_CONFIG.materialsVersion));
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const payload = await response.json();
+      const rows = Array.isArray(payload) ? payload : payload.materials;
+      if (!Array.isArray(rows) || !rows.length) return;
+
+      const materials = rows
+        .map((item) => ({
+          code: String(item.code || "").trim(),
+          name: String(item.name || "").trim(),
+          unit: stripDigits(String(item.unit || "")).trim()
+        }))
+        .filter((item) => item.code && item.name);
+
+      if (!materials.length) return;
+
+      state.materials = dedupeMaterials(materials);
+      state.settings.lastDbName = payload.source || SYSTEM_CONFIG.dbName || materialsUrl;
+      state.settings.lastDbUpdatedAt = payload.updatedAt || SYSTEM_CONFIG.materialsUpdatedAt || null;
+      saveJson(STORAGE_KEYS.materials, state.materials);
+      saveSettings();
+    } catch (error) {
+      console.warn("Cannot load shared material database", error);
+    }
+  }
+
+  function withVersionParam(url, version) {
+    if (!version) return url;
+    const separator = url.includes("?") ? "&" : "?";
+    return `${url}${separator}v=${encodeURIComponent(version)}`;
   }
 
   function setupEvents() {
