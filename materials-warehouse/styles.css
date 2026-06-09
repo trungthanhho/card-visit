@@ -1,7 +1,7 @@
 :root {
   --bg: #f5f7f2;
-  --surface: #ffffff;
-  --surface-alt: #eef3ee;
+  --surface: #fffefd;
+  --surface-alt: #edf5ef;
   --text: #1d241f;
   --muted: #66706a;
   --line: #d8dfd8;
@@ -23,6 +23,12 @@
   --danger: #b42318;
   --danger-soft: #fde8e5;
   --focus: #265c9b;
+  --field-bg: #fdfffb;
+  --mint-panel: #f1fbf5;
+  --sky-panel: #f3f8ff;
+  --cream-panel: #fff8ea;
+  --lavender-panel: #f8f5ff;
+  --peach-panel: #fff5ef;
   --shadow: 0 14px 36px rgba(26, 38, 31, 0.08);
   font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
 }
@@ -35,7 +41,7 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    linear-gradient(180deg, #f7faf6 0%, #f1f8fb 48%, #fff8ed 100%);
+    linear-gradient(135deg, #eef8f3 0%, #f4f8ff 46%, #fff7e9 100%);
   color: var(--text);
 }
 
@@ -62,9 +68,10 @@ fieldset:disabled {
 .app-header {
   align-items: center;
   background:
-    linear-gradient(90deg, #ffffff 0%, #f8fcfa 48%, #fff8ea 100%);
+    linear-gradient(100deg, #f5fbff 0%, #eefaf4 48%, #fff3df 100%);
   border-bottom: 1px solid var(--line);
   border-top: 4px solid var(--primary);
+  box-shadow: 0 6px 22px rgba(36, 50, 41, 0.06);
   display: flex;
   gap: 16px;
   justify-content: space-between;
@@ -195,13 +202,14 @@ h3 {
 
 .entry-panel,
 .admin-section {
-  background: var(--surface);
+  background: linear-gradient(180deg, var(--surface) 0%, #f8fcfb 100%);
   border: 1px solid var(--line);
   border-radius: 8px;
   box-shadow: var(--shadow);
 }
 
 .entry-panel {
+  background: linear-gradient(180deg, #fffefd 0%, #f8fcfb 50%, #fffaf1 100%);
   border-top: 4px solid var(--primary);
   padding: clamp(14px, 3vw, 24px);
 }
@@ -231,18 +239,22 @@ h3 {
 }
 
 .admin-section:nth-child(1) {
+  background: linear-gradient(180deg, var(--sky-panel) 0%, #fffefd 100%);
   border-left: 4px solid var(--blue);
 }
 
 .admin-section:nth-child(2) {
+  background: linear-gradient(180deg, #eefbfb 0%, #fffefd 100%);
   border-left: 4px solid var(--cyan);
 }
 
 .admin-section:nth-child(3) {
+  background: linear-gradient(180deg, var(--cream-panel) 0%, #fffefd 100%);
   border-left: 4px solid var(--amber);
 }
 
 .admin-section:nth-child(4) {
+  background: linear-gradient(180deg, var(--lavender-panel) 0%, #fffefd 100%);
   border-left: 4px solid var(--violet);
 }
 
@@ -325,7 +337,7 @@ fieldset:disabled {
 input,
 select,
 textarea {
-  background: #fbfcfa;
+  background: var(--field-bg);
   border: 1px solid var(--line-strong);
   border-radius: 8px;
   color: var(--text);
@@ -341,7 +353,7 @@ textarea {
 }
 
 input[readonly] {
-  background: #eef3ee;
+  background: #edf6f0;
   color: #46524b;
 }
 
@@ -354,17 +366,24 @@ textarea:focus,
 }
 
 .section-block {
-  border-top: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.74) 0%, rgba(255, 254, 253, 0.92) 100%);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
   margin-top: 20px;
-  padding-top: 20px;
+  padding: 16px;
 }
 
 .section-block:nth-of-type(1) {
-  border-top-color: #cfe2f6;
+  background: linear-gradient(180deg, var(--sky-panel) 0%, rgba(255, 255, 255, 0.86) 100%);
+  border-color: #cfe2f6;
+  border-left-color: var(--blue);
 }
 
 .section-block:nth-of-type(2) {
-  border-top-color: #f3d5a2;
+  background: linear-gradient(180deg, var(--cream-panel) 0%, rgba(255, 255, 255, 0.88) 100%);
+  border-color: #f3d5a2;
+  border-left-color: var(--amber);
 }
 
 .section-title h3 {
@@ -412,7 +431,7 @@ textarea:focus,
 
 .item-card {
   background:
-    linear-gradient(90deg, var(--blue-soft) 0 5px, #fbfcfa 5px 100%);
+    linear-gradient(90deg, var(--blue-soft) 0 5px, #f8fbff 5px 100%);
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 12px;
@@ -428,7 +447,7 @@ textarea:focus,
 }
 
 .suggestions {
-  background: var(--surface);
+  background: #fffefd;
   border: 1px solid var(--line-strong);
   border-radius: 8px;
   box-shadow: 0 16px 36px rgba(22, 34, 28, 0.14);
@@ -488,11 +507,18 @@ textarea:focus,
 
 .upload-panel,
 .signature-panel {
-  background: linear-gradient(180deg, #ffffff 0%, #fbfcfa 100%);
   border: 1px solid var(--line);
   border-radius: 8px;
   min-width: 0;
   padding: 12px;
+}
+
+.upload-panel {
+  background: linear-gradient(180deg, #fffdf7 0%, #f6fbf7 100%);
+}
+
+.signature-panel {
+  background: linear-gradient(180deg, #f8fbff 0%, #fffefd 100%);
 }
 
 .file-field input {
@@ -553,7 +579,7 @@ textarea:focus,
 
 .signature-pad {
   background:
-    linear-gradient(180deg, #ffffff 0%, #fbfcfa 100%);
+    linear-gradient(180deg, #fffefb 0%, #f7fbff 100%);
   border: 1px solid var(--line-strong);
   border-radius: 8px;
   display: block;
@@ -716,7 +742,7 @@ textarea:focus,
 }
 
 .record-row {
-  background: linear-gradient(90deg, var(--violet-soft) 0 5px, #ffffff 5px 100%);
+  background: linear-gradient(90deg, var(--violet-soft) 0 5px, #fbf8ff 5px 100%);
   border: 1px solid var(--line);
   border-radius: 8px;
   display: grid;
@@ -803,7 +829,7 @@ textarea:focus,
 }
 
 .modal-card {
-  background: var(--surface);
+  background: linear-gradient(180deg, var(--surface) 0%, #f9fbff 100%);
   border: 1px solid var(--line);
   border-radius: 8px;
   box-shadow: 0 24px 64px rgba(16, 24, 19, 0.2);
@@ -843,7 +869,7 @@ textarea:focus,
 
 .fullscreen-signature-pad {
   background:
-    linear-gradient(180deg, #ffffff 0%, #fbfcfa 100%);
+    linear-gradient(180deg, #fffefb 0%, #f7fbff 100%);
   border: 1px solid var(--line-strong);
   border-radius: 8px;
   display: block;
