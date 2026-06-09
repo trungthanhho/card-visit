@@ -52,6 +52,8 @@
     pendingDeleteRecordId: null,
     itemSeq: 0,
     adminAuthenticated: false,
+    onlineRecordsLoading: false,
+    lastOnlineRecordsAt: null,
     lastManagerOpen: null,
     signatureDirty: false,
     signatureCtx: null,
@@ -76,6 +78,9 @@
     updateLockState();
     renderPhotos();
     renderRecords();
+    if (state.adminAuthenticated) {
+      refreshOnlineRecords(false);
+    }
     refreshIcons();
 
     window.setInterval(() => {
@@ -83,6 +88,12 @@
       updateLockState();
       updateSyncStatus();
     }, 1000);
+
+    window.setInterval(() => {
+      if (state.adminAuthenticated) {
+        refreshOnlineRecords(false);
+      }
+    }, 15000);
   }
 
   function cacheElements() {
@@ -379,6 +390,7 @@
     updateAdminVisibility();
     updateLockState();
     setMessage("Đã đăng nhập admin.", "success");
+    refreshOnlineRecords(true);
   }
 
   function logoutAdmin() {
@@ -829,14 +841,17 @@
     }
 
     els.photoPreview.innerHTML = state.photos
-      .map((photo, index) => `
-        <div class="photo-tile">
-          <img src="${photo.dataUrl}" alt="${escapeHtml(photo.name || `Ảnh ${index + 1}`)}">
-          <button class="icon-button" type="button" data-photo-index="${index}" aria-label="Xóa ảnh" title="Xóa ảnh">
-            <i data-lucide="x" aria-hidden="true">X</i>
-          </button>
-        </div>
-      `)
+      .map((photo, index) => {
+        const src = photo.dataUrl || photo.url || "";
+        return `
+          <div class="photo-tile">
+            <img src="${escapeHtml(src)}" alt="${escapeHtml(photo.name || `Ảnh ${index + 1}`)}">
+            <button class="icon-button" type="button" data-photo-index="${index}" aria-label="Xóa ảnh" title="Xóa ảnh">
+              <i data-lucide="x" aria-hidden="true">X</i>
+            </button>
+          </div>
+        `;
+      })
       .join("");
 
     els.photoPreview.querySelectorAll("[data-photo-index]").forEach((button) => {
@@ -915,8 +930,11 @@
     updateSyncStatus();
 
     if (state.settings.sheetUrl) {
-      setMessage("Đã lưu cục bộ, đang gửi Google Sheet...", "success");
+      setMessage("Đã lưu dự phòng trên máy này, đang gửi Google Sheet để admin thấy online...", "success");
       await syncRecord(record.id);
+      if (state.adminAuthenticated) {
+        refreshOnlineRecords(false);
+      }
     } else {
       setMessage("Thiết bị này chưa cấu hình Google Apps Script URL nên phiếu chỉ lưu cục bộ, chưa gửi Google Sheet.", "error");
     }
@@ -1126,6 +1144,136 @@
     saveSettings();
     updateSyncStatus();
     renderRecords();
+    if (state.adminAuthenticated && state.settings.sheetUrl) {
+      refreshOnlineRecords(true);
+    }
+  }
+
+  async function refreshOnlineRecords(showMessage) {
+    if (!state.adminAuthenticated || !state.settings.sheetUrl || state.onlineRecordsLoading) return;
+
+    state.onlineRecordsLoading = true;
+    try {
+      const payload = await requestJsonp(state.settings.sheetUrl, {
+        action: "records",
+        limit: "100"
+      });
+
+      if (!payload || payload.ok === false || !Array.isArray(payload.records)) {
+        throw new Error(payload?.error || "Invalid online records response");
+      }
+
+      mergeOnlineRecords(payload.records);
+      state.lastOnlineRecordsAt = new Date().toISOString();
+      saveRecords();
+      renderRecords();
+      updateSyncStatus();
+      if (showMessage) {
+        setMessage(`Đã tải ${payload.records.length} phiếu từ Google Sheet.`, "success");
+      }
+    } catch (error) {
+      if (showMessage) {
+        setMessage("Chưa tải được phiếu online. Cần cập nhật Apps Script và deploy phiên bản mới.", "error");
+      }
+      console.warn("Cannot load online records", error);
+    } finally {
+      state.onlineRecordsLoading = false;
+    }
+  }
+
+  function mergeOnlineRecords(onlineRecords) {
+    const localById = new Map(state.records.map((record) => [record.id, record]));
+    const onlineIds = new Set();
+    const mergedOnline = onlineRecords
+      .map((record) => normalizeOnlineRecord(record, localById.get(record.id)))
+      .filter(Boolean);
+
+    mergedOnline.forEach((record) => onlineIds.add(record.id));
+
+    const localOnly = state.records.filter((record) => {
+      if (onlineIds.has(record.id)) return false;
+      return record.syncStatus !== "sent" || !record.sentAt;
+    });
+
+    state.records = [...mergedOnline, ...localOnly].sort((a, b) => getRecordSortTime(b) - getRecordSortTime(a));
+  }
+
+  function normalizeOnlineRecord(record, localRecord) {
+    if (!record || !record.id) return null;
+
+    const localPhotos = (localRecord?.photos || []).filter((photo) => photo.dataUrl);
+    const onlinePhotos = (record.photos || []).map((photo, index) => ({
+      id: photo.id || createId("PHOTO"),
+      name: photo.name || `Ảnh ${index + 1}`,
+      type: photo.type || "image/jpeg",
+      size: Number(photo.size || 0),
+      dataUrl: photo.dataUrl || "",
+      url: photo.url || photo.photoUrl || ""
+    }));
+
+    return {
+      ...localRecord,
+      ...record,
+      items: Array.isArray(record.items) ? record.items : [],
+      photos: localPhotos.length ? localPhotos : onlinePhotos,
+      signatureDataUrl: localRecord?.signatureDataUrl || record.signatureDataUrl || "",
+      signatureUrl: record.signatureUrl || localRecord?.signatureUrl || "",
+      photoUrls: record.photoUrls || localRecord?.photoUrls || onlinePhotos.map((photo) => photo.url).filter(Boolean),
+      syncStatus: "sent",
+      sentAt: record.sentAt || record.receivedAt || localRecord?.sentAt || new Date().toISOString(),
+      fromSheet: true
+    };
+  }
+
+  function getRecordSortTime(record) {
+    const candidates = [
+      record.updatedAt,
+      record.receivedAt,
+      record.createdAt,
+      record.date && record.time ? `${record.date}T${record.time}` : ""
+    ];
+
+    for (const value of candidates) {
+      const time = Date.parse(value);
+      if (Number.isFinite(time)) return time;
+    }
+    return 0;
+  }
+
+  function requestJsonp(baseUrl, params) {
+    return new Promise((resolve, reject) => {
+      const callbackName = `mwJsonp_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const script = document.createElement("script");
+      const timeout = window.setTimeout(() => {
+        cleanup();
+        reject(new Error("Online records request timed out"));
+      }, 15000);
+
+      function cleanup() {
+        window.clearTimeout(timeout);
+        delete window[callbackName];
+        script.remove();
+      }
+
+      window[callbackName] = (payload) => {
+        cleanup();
+        resolve(payload);
+      };
+
+      script.onerror = () => {
+        cleanup();
+        reject(new Error("Online records request failed"));
+      };
+
+      const url = new URL(baseUrl);
+      Object.entries(params || {}).forEach(([key, value]) => {
+        url.searchParams.set(key, value);
+      });
+      url.searchParams.set("callback", callbackName);
+      url.searchParams.set("_", String(Date.now()));
+      script.src = url.toString();
+      document.head.appendChild(script);
+    });
   }
 
   async function syncPendingRecords() {
@@ -1286,7 +1434,8 @@
         const itemText = record.items.length === 1 ? record.items[0].name : `${record.items.length} dòng vật tư`;
         const status = getRecordStatus(record);
         const isCancelled = Boolean(record.cancelledAt);
-        const editCancelDisabled = !managerOpen || isCancelled;
+        const editDisabled = !managerOpen || isCancelled || isOnlineOnlyRecord(record);
+        const cancelDisabled = !managerOpen || isCancelled;
         const deleteDisabled = !managerOpen;
         const cancelMeta = isCancelled
           ? `<div class="record-meta">Hủy: ${escapeHtml(formatDateTimeShort(new Date(record.cancelledAt)))} · ${escapeHtml(record.cancelReason || "Không ghi lý do")}</div>`
@@ -1302,11 +1451,11 @@
               <span class="tag ${status.className}">${status.label}</span>
             </div>
             <div class="record-actions">
-              <button class="secondary-button" type="button" data-record-action="edit" data-record-id="${record.id}" ${editCancelDisabled ? "disabled" : ""}>
+              <button class="secondary-button" type="button" data-record-action="edit" data-record-id="${record.id}" ${editDisabled ? "disabled" : ""}>
                 <i data-lucide="pencil" aria-hidden="true"></i>
                 <span>Sửa</span>
               </button>
-              <button class="danger-button" type="button" data-record-action="cancel" data-record-id="${record.id}" ${editCancelDisabled ? "disabled" : ""}>
+              <button class="danger-button" type="button" data-record-action="cancel" data-record-id="${record.id}" ${cancelDisabled ? "disabled" : ""}>
                 <i data-lucide="ban" aria-hidden="true"></i>
                 <span>${isCancelled ? "Đã hủy" : "Hủy"}</span>
               </button>
@@ -1337,6 +1486,13 @@
     return "Cục bộ";
   }
 
+  function isOnlineOnlyRecord(record) {
+    if (!record.fromSheet) return false;
+    const hasLocalSignature = Boolean(record.signatureDataUrl);
+    const hasLocalPhotos = (record.photos || []).some((photo) => Boolean(photo.dataUrl));
+    return !hasLocalSignature || !hasLocalPhotos;
+  }
+
   async function handleRecordAction(event) {
     if (!requireAdmin()) return;
     const button = event.target.closest("[data-record-action]");
@@ -1354,6 +1510,10 @@
     if (action === "edit") {
       if (record.cancelledAt) {
         setMessage("Phiếu này đã hủy, không thể sửa.", "error");
+        return;
+      }
+      if (isOnlineOnlyRecord(record)) {
+        setMessage("Phiếu tải từ Google Sheet chỉ có link ảnh/chữ ký nên không sửa trực tiếp trên máy này. Có thể hủy hoặc xóa vĩnh viễn.", "error");
         return;
       }
       loadRecordForEdit(record);
@@ -1389,6 +1549,9 @@
     if (state.settings.sheetUrl) {
       setMessage("Đã hủy phiếu cục bộ, đang cập nhật Google Sheet...", "success");
       await syncRecord(record.id);
+      if (state.adminAuthenticated) {
+        refreshOnlineRecords(false);
+      }
     } else {
       setMessage("Đã hủy phiếu cục bộ. Cấu hình Google Sheet hoặc xuất CSV/JSON để lưu vết hủy.", "success");
     }
@@ -1410,6 +1573,9 @@
     renderRecords();
     updateSyncStatus();
     setMessage("Đã xóa vĩnh viễn phiếu.", "success");
+    if (state.adminAuthenticated) {
+      window.setTimeout(() => refreshOnlineRecords(false), 1200);
+    }
   }
 
   function loadRecordForEdit(record) {

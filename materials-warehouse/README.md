@@ -62,6 +62,8 @@ https://script.google.com/home/projects/.../edit
 
 Apps Script sẽ ghi mỗi dòng vật tư thành một dòng trong Sheet. Nếu một phiếu có 5 vật tư thì Sheet có 5 dòng, các thông tin chung được lặp lại, chữ ký và 3 ảnh là link Google Drive.
 
+Khi admin đăng nhập trong web, app sẽ tự tải tối đa 100 phiếu gần nhất từ Google Sheet và làm mới khoảng 15 giây/lần. Vì vậy admin có thể thấy phiếu do công nhân gửi từ điện thoại khác. Để chức năng này hoạt động, file `google-apps-script.gs` phải được copy lên Apps Script và deploy phiên bản Web app mới.
+
 Khi quản lý bấm `Hủy` một phiếu, app không xóa dữ liệu vật tư. Phiếu sẽ được đánh dấu `Đã hủy` và gửi lại lên Google Sheet với các cột:
 
 - `trang_thai_phieu`
