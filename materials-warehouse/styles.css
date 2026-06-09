@@ -972,6 +972,9 @@ textarea:focus,
   .company-logo {
     align-self: center;
     height: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    object-position: center;
     width: min(230px, 72vw);
   }
 
