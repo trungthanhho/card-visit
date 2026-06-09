@@ -148,6 +148,7 @@
       "signaturePad",
       "expandSignatureBtn",
       "clearSignatureBtn",
+      "signatureStatus",
       "signatureDialog",
       "closeSignatureDialogBtn",
       "fullscreenSignaturePad",
@@ -438,6 +439,7 @@
 
   function setupSignaturePad() {
     resizeSignaturePad();
+    updateSignatureStatus();
     window.addEventListener("resize", debounce(resizeSignaturePad, 160));
     window.addEventListener("resize", debounce(() => {
       if (!els.signatureDialog.classList.contains("hidden")) {
@@ -526,6 +528,7 @@
     event.preventDefault();
     state.drawing = false;
     state.currentSignatureDataUrl = els.signaturePad.toDataURL("image/png");
+    updateSignatureStatus();
   }
 
   function getCanvasPoint(event) {
@@ -544,13 +547,27 @@
     clearCanvas(els.signaturePad, state.signatureCtx);
     state.signatureDirty = false;
     state.currentSignatureDataUrl = "";
+    updateSignatureStatus();
   }
 
   function drawSignatureImage(dataUrl) {
     drawSignatureImageToCanvas(els.signaturePad, state.signatureCtx, dataUrl, () => {
       state.signatureDirty = true;
       state.currentSignatureDataUrl = dataUrl;
+      updateSignatureStatus();
     });
+  }
+
+  function updateSignatureStatus() {
+    const signed = state.signatureDirty;
+    els.signatureStatus.textContent = signed ? "Đã ký" : "Chưa ký";
+    els.signatureStatus.classList.toggle("signed", signed);
+    els.clearSignatureBtn.classList.toggle("hidden", !signed);
+
+    const buttonText = els.expandSignatureBtn.querySelector("span");
+    if (buttonText) {
+      buttonText.textContent = signed ? "Ký lại toàn màn hình" : "Ký tên toàn màn hình";
+    }
   }
 
   function drawSignatureImageToCanvas(canvas, ctx, dataUrl, onDone) {

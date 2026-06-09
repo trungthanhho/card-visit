@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Phiếu xuất kho vật tư</title>
-  <link rel="stylesheet" href="styles.css?v=20260609-pastel-ui">
+  <link rel="stylesheet" href="styles.css?v=20260609-signature-button">
   <script defer src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
   <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script defer src="config.js"></script>
-  <script defer src="app.js"></script>
+  <script defer src="app.js?v=20260609-signature-button"></script>
 </head>
 <body>
   <header class="app-header">
@@ -117,19 +117,20 @@
                 <div id="photoPreview" class="photo-preview" aria-live="polite"></div>
               </div>
 
-              <div class="signature-panel">
+              <div class="signature-panel signature-button-panel">
                 <div class="signature-header">
-                  <label for="signaturePad">Ký tên xác nhận</label>
-                  <div class="signature-tools">
-                    <button id="expandSignatureBtn" class="icon-button" type="button" aria-label="Mở khung ký lớn" title="Mở khung ký lớn">
-                      <i data-lucide="maximize-2" aria-hidden="true">X</i>
-                    </button>
-                    <button id="clearSignatureBtn" class="icon-button" type="button" aria-label="Xóa chữ ký" title="Xóa chữ ký">
-                      <i data-lucide="eraser" aria-hidden="true">X</i>
-                    </button>
-                  </div>
+                  <span class="signature-label">Ký tên xác nhận</span>
+                  <span id="signatureStatus" class="small-badge signature-status-badge">Chưa ký</span>
                 </div>
-                <canvas id="signaturePad" class="signature-pad"></canvas>
+                <button id="expandSignatureBtn" class="secondary-button signature-open-button" type="button">
+                  <i data-lucide="pen-line" aria-hidden="true"></i>
+                  <span>Ký tên toàn màn hình</span>
+                </button>
+                <button id="clearSignatureBtn" class="ghost-button signature-clear-button hidden" type="button">
+                  <i data-lucide="eraser" aria-hidden="true"></i>
+                  <span>Xóa chữ ký</span>
+                </button>
+                <canvas id="signaturePad" class="signature-pad signature-pad-store" aria-hidden="true"></canvas>
               </div>
             </div>
 

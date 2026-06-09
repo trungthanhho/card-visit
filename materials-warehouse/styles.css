@@ -328,7 +328,8 @@ fieldset:disabled {
 }
 
 .field span,
-.signature-header label {
+.signature-header label,
+.signature-label {
   color: #37413b;
   font-size: 0.88rem;
   font-weight: 700;
@@ -570,11 +571,45 @@ textarea:focus,
   align-content: start;
   display: grid;
   gap: 8px;
+  position: relative;
 }
 
 .signature-tools {
   display: inline-flex;
   gap: 6px;
+}
+
+.signature-button-panel {
+  gap: 12px;
+}
+
+.signature-open-button {
+  background: linear-gradient(135deg, var(--blue-soft) 0%, #e8f8f2 100%);
+  border: 1px solid #c8d9ee;
+  color: #143a62;
+  font-size: 1rem;
+  min-height: 72px;
+  width: 100%;
+}
+
+.signature-open-button:hover {
+  background: linear-gradient(135deg, #dbeafd 0%, #d9f3e9 100%);
+}
+
+.signature-open-button svg {
+  height: 22px;
+  width: 22px;
+}
+
+.signature-clear-button {
+  justify-self: start;
+  min-height: 38px;
+  padding: 8px 10px;
+}
+
+.signature-status-badge.signed {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
 }
 
 .signature-pad {
@@ -586,6 +621,16 @@ textarea:focus,
   height: 170px;
   touch-action: none;
   width: 100%;
+}
+
+.signature-pad-store {
+  height: 170px;
+  left: -10000px;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 280px;
 }
 
 .primary-button,
