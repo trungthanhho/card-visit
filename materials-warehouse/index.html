@@ -120,9 +120,14 @@
               <div class="signature-panel">
                 <div class="signature-header">
                   <label for="signaturePad">Ký tên xác nhận</label>
-                  <button id="clearSignatureBtn" class="icon-button" type="button" aria-label="Xóa chữ ký" title="Xóa chữ ký">
-                    <i data-lucide="eraser" aria-hidden="true">X</i>
-                  </button>
+                  <div class="signature-tools">
+                    <button id="expandSignatureBtn" class="icon-button" type="button" aria-label="Mở khung ký lớn" title="Mở khung ký lớn">
+                      <i data-lucide="maximize-2" aria-hidden="true">X</i>
+                    </button>
+                    <button id="clearSignatureBtn" class="icon-button" type="button" aria-label="Xóa chữ ký" title="Xóa chữ ký">
+                      <i data-lucide="eraser" aria-hidden="true">X</i>
+                    </button>
+                  </div>
                 </div>
                 <canvas id="signaturePad" class="signature-pad"></canvas>
               </div>
@@ -236,6 +241,31 @@
       </section>
     </aside>
   </main>
+
+  <div id="signatureDialog" class="modal signature-modal hidden" role="dialog" aria-modal="true" aria-labelledby="signatureDialogTitle">
+    <div class="modal-card signature-modal-card">
+      <div class="modal-heading">
+        <div>
+          <p class="eyebrow">Ký xác nhận</p>
+          <h2 id="signatureDialogTitle">Ký tên toàn màn hình</h2>
+        </div>
+        <button id="closeSignatureDialogBtn" class="icon-button" type="button" aria-label="Đóng" title="Đóng">
+          <i data-lucide="x" aria-hidden="true">X</i>
+        </button>
+      </div>
+      <canvas id="fullscreenSignaturePad" class="fullscreen-signature-pad"></canvas>
+      <div class="modal-actions signature-modal-actions">
+        <button id="clearFullscreenSignatureBtn" class="secondary-button" type="button">
+          <i data-lucide="eraser" aria-hidden="true"></i>
+          <span>Xóa chữ ký</span>
+        </button>
+        <button id="useFullscreenSignatureBtn" class="primary-button" type="button">
+          <i data-lucide="check" aria-hidden="true"></i>
+          <span>Dùng chữ ký</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <div id="adminDialog" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="adminDialogTitle">
     <div class="modal-card">

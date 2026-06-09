@@ -59,6 +59,11 @@
     signatureCtx: null,
     drawing: false,
     lastPoint: null,
+    fullscreenSignatureCtx: null,
+    fullscreenDrawing: false,
+    fullscreenLastPoint: null,
+    fullscreenSignatureDirty: false,
+    fullscreenSignatureDataUrl: "",
     currentSignatureDataUrl: ""
   };
 
@@ -141,7 +146,13 @@
       "photoPreview",
       "photoCount",
       "signaturePad",
+      "expandSignatureBtn",
       "clearSignatureBtn",
+      "signatureDialog",
+      "closeSignatureDialogBtn",
+      "fullscreenSignaturePad",
+      "clearFullscreenSignatureBtn",
+      "useFullscreenSignatureBtn",
       "note",
       "submitBtn",
       "formMessage",
@@ -260,7 +271,14 @@
     els.itemRows.addEventListener("input", handleItemInput);
     els.itemRows.addEventListener("click", handleItemClick);
     els.photoInput.addEventListener("change", handlePhotoInput);
+    els.expandSignatureBtn.addEventListener("click", openSignatureDialog);
     els.clearSignatureBtn.addEventListener("click", clearSignature);
+    els.closeSignatureDialogBtn.addEventListener("click", closeSignatureDialog);
+    els.clearFullscreenSignatureBtn.addEventListener("click", clearFullscreenSignature);
+    els.useFullscreenSignatureBtn.addEventListener("click", useFullscreenSignature);
+    els.signatureDialog.addEventListener("click", (event) => {
+      if (event.target === els.signatureDialog) closeSignatureDialog();
+    });
     els.dbFile.addEventListener("change", handleDatabaseImport);
     els.saveSheetUrlBtn.addEventListener("click", saveSheetUrl);
     els.resendPendingBtn.addEventListener("click", syncPendingRecords);
@@ -283,6 +301,7 @@
         closeAdminDialog();
         closeCancelDialog();
         closeDeleteDialog();
+        closeSignatureDialog();
       }
     });
   }
@@ -420,20 +439,54 @@
   function setupSignaturePad() {
     resizeSignaturePad();
     window.addEventListener("resize", debounce(resizeSignaturePad, 160));
+    window.addEventListener("resize", debounce(() => {
+      if (!els.signatureDialog.classList.contains("hidden")) {
+        resizeFullscreenSignaturePad();
+      }
+    }, 160));
 
     els.signaturePad.addEventListener("pointerdown", startSignature);
     els.signaturePad.addEventListener("pointermove", moveSignature);
     els.signaturePad.addEventListener("pointerup", endSignature);
     els.signaturePad.addEventListener("pointercancel", endSignature);
     els.signaturePad.addEventListener("pointerleave", endSignature);
+
+    els.fullscreenSignaturePad.addEventListener("pointerdown", startFullscreenSignature);
+    els.fullscreenSignaturePad.addEventListener("pointermove", moveFullscreenSignature);
+    els.fullscreenSignaturePad.addEventListener("pointerup", endFullscreenSignature);
+    els.fullscreenSignaturePad.addEventListener("pointercancel", endFullscreenSignature);
+    els.fullscreenSignaturePad.addEventListener("pointerleave", endFullscreenSignature);
   }
 
   function resizeSignaturePad() {
     const canvas = els.signaturePad;
     const existing = state.signatureDirty ? canvas.toDataURL("image/png") : "";
+    state.signatureCtx = prepareSignatureCanvas(canvas, 280, 170);
+
+    if (existing) {
+      drawSignatureImage(existing);
+    }
+  }
+
+  function resizeFullscreenSignaturePad() {
+    const canvas = els.fullscreenSignaturePad;
+    const existing = state.fullscreenSignatureDirty
+      ? (state.fullscreenSignatureDataUrl || canvas.toDataURL("image/png"))
+      : state.currentSignatureDataUrl;
+    state.fullscreenSignatureCtx = prepareSignatureCanvas(canvas, 320, 360);
+
+    if (existing) {
+      drawSignatureImageToCanvas(canvas, state.fullscreenSignatureCtx, existing, () => {
+        state.fullscreenSignatureDirty = true;
+        state.fullscreenSignatureDataUrl = existing;
+      });
+    }
+  }
+
+  function prepareSignatureCanvas(canvas, minWidth, minHeight) {
     const rect = canvas.getBoundingClientRect();
-    const width = Math.max(280, Math.floor(rect.width));
-    const height = Math.max(170, Math.floor(rect.height || 190));
+    const width = Math.max(minWidth, Math.floor(rect.width));
+    const height = Math.max(minHeight, Math.floor(rect.height || minHeight));
     const dpr = window.devicePixelRatio || 1;
 
     canvas.width = Math.floor(width * dpr);
@@ -443,13 +496,9 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.lineWidth = 2.4;
+    ctx.lineWidth = 2.8;
     ctx.strokeStyle = "#17211b";
-    state.signatureCtx = ctx;
-
-    if (existing) {
-      drawSignatureImage(existing);
-    }
+    return ctx;
   }
 
   function startSignature(event) {
@@ -480,7 +529,11 @@
   }
 
   function getCanvasPoint(event) {
-    const rect = els.signaturePad.getBoundingClientRect();
+    return getCanvasPointFor(event, els.signaturePad);
+  }
+
+  function getCanvasPointFor(event, canvas) {
+    const rect = canvas.getBoundingClientRect();
     return {
       x: event.clientX - rect.left,
       y: event.clientY - rect.top
@@ -488,21 +541,94 @@
   }
 
   function clearSignature() {
-    state.signatureCtx.clearRect(0, 0, els.signaturePad.width, els.signaturePad.height);
+    clearCanvas(els.signaturePad, state.signatureCtx);
     state.signatureDirty = false;
     state.currentSignatureDataUrl = "";
   }
 
   function drawSignatureImage(dataUrl) {
-    const image = new Image();
-    image.onload = () => {
-      const rect = els.signaturePad.getBoundingClientRect();
-      state.signatureCtx.clearRect(0, 0, els.signaturePad.width, els.signaturePad.height);
-      state.signatureCtx.drawImage(image, 0, 0, rect.width, rect.height || 190);
+    drawSignatureImageToCanvas(els.signaturePad, state.signatureCtx, dataUrl, () => {
       state.signatureDirty = true;
       state.currentSignatureDataUrl = dataUrl;
+    });
+  }
+
+  function drawSignatureImageToCanvas(canvas, ctx, dataUrl, onDone) {
+    const image = new Image();
+    image.onload = () => {
+      const rect = canvas.getBoundingClientRect();
+      clearCanvas(canvas, ctx);
+      ctx.drawImage(image, 0, 0, rect.width, rect.height || 190);
+      if (onDone) onDone();
     };
     image.src = dataUrl;
+  }
+
+  function clearCanvas(canvas, ctx) {
+    const rect = canvas.getBoundingClientRect();
+    ctx.clearRect(0, 0, rect.width, rect.height || canvas.height);
+  }
+
+  function openSignatureDialog() {
+    if (els.issueFieldset.disabled) return;
+    state.fullscreenSignatureDirty = state.signatureDirty;
+    state.fullscreenSignatureDataUrl = state.signatureDirty
+      ? els.signaturePad.toDataURL("image/png")
+      : "";
+    els.signatureDialog.classList.remove("hidden");
+    document.body.classList.add("modal-open");
+    window.setTimeout(() => {
+      resizeFullscreenSignaturePad();
+      refreshIcons();
+    }, 0);
+  }
+
+  function closeSignatureDialog() {
+    els.signatureDialog.classList.add("hidden");
+    document.body.classList.remove("modal-open");
+    state.fullscreenDrawing = false;
+  }
+
+  function startFullscreenSignature(event) {
+    event.preventDefault();
+    els.fullscreenSignaturePad.setPointerCapture(event.pointerId);
+    state.fullscreenDrawing = true;
+    state.fullscreenSignatureDirty = true;
+    state.fullscreenLastPoint = getCanvasPointFor(event, els.fullscreenSignaturePad);
+    state.fullscreenSignatureCtx.beginPath();
+    state.fullscreenSignatureCtx.moveTo(state.fullscreenLastPoint.x, state.fullscreenLastPoint.y);
+  }
+
+  function moveFullscreenSignature(event) {
+    if (!state.fullscreenDrawing) return;
+    event.preventDefault();
+    const point = getCanvasPointFor(event, els.fullscreenSignaturePad);
+    state.fullscreenSignatureCtx.lineTo(point.x, point.y);
+    state.fullscreenSignatureCtx.stroke();
+    state.fullscreenLastPoint = point;
+  }
+
+  function endFullscreenSignature(event) {
+    if (!state.fullscreenDrawing) return;
+    event.preventDefault();
+    state.fullscreenDrawing = false;
+    state.fullscreenSignatureDataUrl = els.fullscreenSignaturePad.toDataURL("image/png");
+  }
+
+  function clearFullscreenSignature() {
+    clearCanvas(els.fullscreenSignaturePad, state.fullscreenSignatureCtx);
+    state.fullscreenSignatureDirty = false;
+    state.fullscreenSignatureDataUrl = "";
+  }
+
+  function useFullscreenSignature() {
+    if (state.fullscreenSignatureDirty) {
+      const dataUrl = state.fullscreenSignatureDataUrl || els.fullscreenSignaturePad.toDataURL("image/png");
+      drawSignatureImage(dataUrl);
+    } else {
+      clearSignature();
+    }
+    closeSignatureDialog();
   }
 
   function updateNowFields(force) {

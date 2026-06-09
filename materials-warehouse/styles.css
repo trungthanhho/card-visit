@@ -39,6 +39,10 @@ body {
   color: var(--text);
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 button,
 input,
 select,
@@ -542,6 +546,11 @@ textarea:focus,
   gap: 8px;
 }
 
+.signature-tools {
+  display: inline-flex;
+  gap: 6px;
+}
+
 .signature-pad {
   background:
     linear-gradient(180deg, #ffffff 0%, #fbfcfa 100%);
@@ -819,6 +828,36 @@ textarea:focus,
   width: min(100%, 560px);
 }
 
+.signature-modal {
+  align-items: stretch;
+  padding: 12px;
+}
+
+.signature-modal-card {
+  border-top: 4px solid var(--primary);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: min(92dvh, 920px);
+  max-width: 1120px;
+  width: min(100%, 1120px);
+}
+
+.fullscreen-signature-pad {
+  background:
+    linear-gradient(180deg, #ffffff 0%, #fbfcfa 100%);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  display: block;
+  height: 100%;
+  min-height: 360px;
+  touch-action: none;
+  width: 100%;
+}
+
+.signature-modal-actions {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
 .modal-heading,
 .modal-actions {
   align-items: center;
@@ -1018,6 +1057,23 @@ textarea:focus,
 
   .modal-actions {
     align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .signature-modal {
+    padding: 8px;
+  }
+
+  .signature-modal-card {
+    height: calc(100dvh - 16px);
+    padding: 12px;
+  }
+
+  .fullscreen-signature-pad {
+    min-height: 0;
+  }
+
+  .signature-modal-actions {
     flex-direction: column-reverse;
   }
 }
